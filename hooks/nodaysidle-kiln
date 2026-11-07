@@ -1,0 +1,114 @@
+#!/bin/bash
+# Omarchy Theme Hook for nodaysidle Kiln
+# Manages GTK styling imports, Fish shell syntax colors, Ghostty & Herdr reload.
+set -euo pipefail
+
+THEME="${1:-}"
+
+THEME_DIR="$HOME/.config/omarchy/themes/nodaysidle-kiln"
+if [[ ! -d "$THEME_DIR" && -d "$HOME/dev/nodaysidle/omarchy-theme-nodaysidle-kiln" ]]; then
+  THEME_DIR="$HOME/dev/nodaysidle/omarchy-theme-nodaysidle-kiln"
+fi
+
+GTK4_CSS="$HOME/.config/gtk-4.0/gtk.css"
+GTK3_CSS="$HOME/.config/gtk-3.0/gtk.css"
+SHIM4='@import url("../omarchy/current/theme/gtk.css");'
+SHIM3='@import url("../omarchy/current/theme/gtk3.css");'
+
+add_import() {
+  local file=$1 line=$2 tmp
+  mkdir -p "$(dirname "$file")"
+
+  if [[ ! -f $file ]]; then
+    printf '%s\n' "$line" >"$file"
+    return 0
+  fi
+
+  grep -qxF "$line" "$file" && return 0
+
+  tmp="$file.nodaysidle-kiln.$$"
+  { printf '%s\n' "$line"; cat "$file"; } >"$tmp"
+  mv "$tmp" "$file"
+}
+
+remove_import() {
+  local file=$1 line=$2 tmp
+  [[ -f $file ]] || return 0
+  grep -qxF "$line" "$file" || return 0
+
+  tmp="$file.nodaysidle-kiln.$$"
+  grep -vxF "$line" "$file" >"$tmp" || true
+  if [[ -s $tmp ]]; then
+    mv "$tmp" "$file"
+  else
+    rm -f "$tmp" "$file"
+  fi
+}
+
+apply_assets() {
+  [[ -d $THEME_DIR ]] || return 0
+  add_import "$GTK4_CSS" "$SHIM4"
+  [[ -f $THEME_DIR/gtk3.css ]] && add_import "$GTK3_CSS" "$SHIM3"
+}
+
+revert_assets() {
+  remove_import "$GTK4_CSS" "$SHIM4"
+  remove_import "$GTK3_CSS" "$SHIM3"
+}
+
+if [[ "$THEME" == "nodaysidle-kiln" || "$THEME" == "Nodaysidle Kiln" ]]; then
+  # 1. Apply GTK CSS shims
+  apply_assets
+
+  # 2. Update Fish shell syntax highlighting for nodaysidle-kiln
+  mkdir -p "$HOME/.config/fish/conf.d"
+  cat <<'EOF' > "$HOME/.config/fish/conf.d/omarchy-theme.fish"
+# Generated for nodaysidle-kiln
+set -g fish_color_normal ede3d6
+set -g fish_color_command e8703a --bold
+set -g fish_color_keyword e9b44c --bold
+set -g fish_color_quote 8fa65b
+set -g fish_color_redirection 7fa89a
+set -g fish_color_end 6b5b4e
+set -g fish_color_error d64545 --bold
+set -g fish_color_param ede3d6
+set -g fish_color_comment 6b5b4e
+set -g fish_color_selection --background=2a1a12
+set -g fish_color_search_match --background=2a1a12
+set -g fish_color_operator e9b44c
+set -g fish_color_escape 7fa89a
+set -g fish_color_autosuggestion 6b5b4e
+EOF
+
+  # 3. Update universal fish variables for active sessions
+  if command -v fish >/dev/null 2>&1; then
+    fish -c "
+      set -U fish_color_normal ede3d6
+      set -U fish_color_command e8703a --bold
+      set -U fish_color_keyword e9b44c --bold
+      set -U fish_color_quote 8fa65b
+      set -U fish_color_redirection 7fa89a
+      set -U fish_color_end 6b5b4e
+      set -U fish_color_error d64545 --bold
+      set -U fish_color_param ede3d6
+      set -U fish_color_comment 6b5b4e
+      set -U fish_color_selection --background=2a1a12
+      set -U fish_color_search_match --background=2a1a12
+      set -U fish_color_operator e9b44c
+      set -U fish_color_escape 7fa89a
+      set -U fish_color_autosuggestion 6b5b4e
+    " >/dev/null 2>&1 || true
+  fi
+
+  # 4. Reload Ghostty terminal
+  killall -SIGUSR2 ghostty >/dev/null 2>&1 || true
+
+  # 5. Reload Herdr multiplexer server
+  if command -v herdr >/dev/null 2>&1; then
+    herdr server reload-config >/dev/null 2>&1 || true
+  fi
+
+  echo "[nodaysidle-kiln] Applied theme hook (GTK, Fish, Ghostty, Herdr updated)"
+else
+  revert_assets
+fi

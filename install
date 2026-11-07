@@ -1,0 +1,32 @@
+#!/bin/bash
+# nodaysidle Kiln — installer
+set -euo pipefail
+THEME_SRC="$HOME/dev/nodaysidle/omarchy-theme-nodaysidle-kiln"
+TARGET_DIR="$HOME/.config/omarchy/themes/nodaysidle-kiln"
+HOOK_DIR="$HOME/.config/omarchy/hooks/theme-set.d"
+[[ -d $THEME_SRC ]] || THEME_SRC="$(cd "$(dirname "$0")" && pwd)"
+
+mkdir -p "$(dirname "$TARGET_DIR")"
+if [[ $THEME_SRC != "$TARGET_DIR" ]]; then
+  ln -sfn "$THEME_SRC" "$TARGET_DIR"
+  echo "✔ Linked theme: $THEME_SRC -> $TARGET_DIR"
+fi
+
+mkdir -p "$HOME/.config/omarchy/plugins"
+if [[ -d "$THEME_SRC/plugins" ]]; then
+  for p in "$THEME_SRC/plugins"/*; do
+    [[ -d $p ]] || continue
+    ln -sfn "$p" "$HOME/.config/omarchy/plugins/$(basename "$p")"
+  done
+fi
+
+mkdir -p "$HOOK_DIR"
+install -m 755 "$THEME_SRC/hooks/nodaysidle-kiln" "$HOOK_DIR/nodaysidle-kiln"
+echo "✔ Hook installed"
+
+CURRENT="$(cat "${XDG_STATE_HOME:-$HOME/.local/state}/omarchy/current/theme.name" 2>/dev/null || echo '')"
+if [[ $CURRENT == "nodaysidle-kiln" || $CURRENT == "Nodaysidle Kiln" ]]; then
+  bash "$HOOK_DIR/nodaysidle-kiln" "nodaysidle-kiln"
+else
+  echo "Activate with: omarchy theme set nodaysidle-kiln"
+fi

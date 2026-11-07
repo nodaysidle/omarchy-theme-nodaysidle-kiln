@@ -1,0 +1,91 @@
+# Omarchy Shell Surfaces — nodaysidle Kiln
+# Warm analogue bar: thick lintel, ember ticks, tabular clock.
+
+[bar]
+background       = "#0C0908"
+background-alpha = 0.94
+text             = "#C8B7A6"
+active           = "#E8703A"
+scale-with-font  = true
+size-horizontal  = 30
+size-vertical    = 32
+border-color     = "#2A1F19"
+border-width     = 1
+
+[hyprland]
+active-border            = "#E8703A"
+active-border-foreground = "#F5CE6B"
+
+[controls]
+normal-color        = "#6B5B4E"
+normal-fill-alpha   = 0.06
+normal-border       = "#3A2C24"
+normal-border-width = 1
+normal-border-alpha = 0.70
+
+hover-cursor-color        = "#E9B44C"
+hover-cursor-fill-alpha   = 0.14
+hover-cursor-border       = "#E9B44C"
+hover-cursor-border-width = 1
+hover-cursor-border-alpha = 0.75
+
+focus-color        = "#E8703A"
+focus-fill-alpha   = 0.14
+focus-border       = "#E9B44C"
+focus-border-width = 1
+focus-border-alpha = 0.85
+
+selected-color        = "#E8703A"
+selected-fill-alpha   = 0.20
+selected-border       = "#FF8A52"
+selected-border-width = 1
+selected-border-alpha = 0.85
+
+pressed-fill-alpha   = 0.30
+selection-fill-alpha = 0.40
+
+[font]
+base-size = 11
+
+[popups]
+background       = "#080605"
+background-alpha = 0.97
+text             = "#EDE3D6"
+border           = "#3A2C24"
+border-alpha     = 0.85
+
+[tooltip]
+background       = "#080605"
+background-alpha = 0.98
+text             = "#EDE3D6"
+border           = "#3A2C24"
+border-alpha     = 0.80
+
+[workspaces]
+style            = "ticks"
+active-color     = "#E8703A"
+occupied-color   = "#8A5A3B"
+empty-color      = "#3A2C24"
+
+[clock]
+format           = "%a %d %b  %H:%M"
+format-alt       = "%H:%M"
+monospace        = true
+
+[notifications]
+background       = "#080605"
+background-alpha = 0.96
+text             = "#EDE3D6"
+border           = "#E8703A"
+border-alpha     = 0.85
+urgency-low      = "#6B5B4E"
+urgency-normal   = "#E8703A"
+urgency-critical = "#D64545"
+
+[osd]
+background       = "#080605"
+background-alpha = 0.94
+text             = "#EDE3D6"
+border           = "#3A2C24"
+border-alpha     = 0.70
+fill             = "#E8703A"

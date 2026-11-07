@@ -1,0 +1,29 @@
+# Universal Rules & Secrets
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Secrets & Environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs & Temp
+*.log
+tmp/
+.cache/
+
+# Trail-Code & AI Agent local cache
+graft/
+.ship-out/
+
+# Python Stack
+__pycache__/
+*.py[cod]
+.venv/
+venv/

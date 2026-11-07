@@ -1,0 +1,15 @@
+#!/bin/bash
+# Uninstaller for nodaysidle Kiln
+set -euo pipefail
+
+TARGET_DIR="$HOME/.config/omarchy/themes/nodaysidle-kiln"
+HOOK_FILE="$HOME/.config/omarchy/hooks/theme-set.d/nodaysidle-kiln"
+
+if [[ -f "$HOOK_FILE" ]]; then
+  bash "$HOOK_FILE" "none" || true
+  rm -f "$HOOK_FILE"
+  echo "✔ Removed hook: $HOOK_FILE"
+fi
+
+rm -rf "$TARGET_DIR"
+echo "✔ Removed nodaysidle-kiln links"

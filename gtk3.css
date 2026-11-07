@@ -1,0 +1,21 @@
+/* nodaysidle Kiln — GTK */
+window.background, .view, listview, gridview, columnview, scrolledwindow, viewport {
+  background-color: rgba(16, 12, 10, 0.96);
+  background-image: none;
+  color: #EDE3D6;
+}
+headerbar, .titlebar {
+  background-color: #0C0908;
+  border-bottom: 1px solid #2A1F19;
+  color: #EDE3D6;
+}
+button { background-color: #1A1411; border: 1px solid #3A2C24; color: #EDE3D6; border-radius: 6px; }
+button:hover { border-color: #E9B44C; }
+button:active, button:checked { background-color: #2A1A12; border-color: #E8703A; color: #F5CE6B; }
+entry, spinbutton, searchbar entry { background-color: #080605; border: 1px solid #3A2C24; color: #EDE3D6; }
+entry:focus, entry:focus-within { border-color: #E8703A; }
+selection, *:selected { background-color: #2A1A12; color: #F5EDE2; }
+link, *:link { color: #E9B44C; }
+tooltip { background-color: #080605; color: #EDE3D6; border: 1px solid #3A2C24; }
+scrollbar slider { background-color: #3A2C24; border-radius: 8px; }
+scrollbar slider:hover { background-color: #8A5A3B; }
